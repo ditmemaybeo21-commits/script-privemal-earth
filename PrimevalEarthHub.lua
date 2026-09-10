@@ -4,7 +4,7 @@
     GitHub: https://github.com/ditmemaybeo21-commits/script-primeval-earth
 ]]
 
-local BASE_URL = "https://raw.githubusercontent.com/ditmemaybeo21-commits/script-primeval-earth/main/src/"
+local BASE_URL = "https://raw.githubusercontent.com/ditmemaybeo21-commits/script-privemal-earth/main/src/"
 
 local function loadModule(name)
     local url = BASE_URL .. name .. ".lua"
