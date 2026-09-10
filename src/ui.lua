@@ -1,7 +1,4 @@
---[[
-    UI Module - Menu giao diện
-]]
-
+-- UI Module - Menu giao diện
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -14,16 +11,13 @@ local Notifier = _G.PEHub.Notifier
 
 local UI = {}
 
--- Tạo ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "PEHub_Menu"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = CoreGui or LocalPlayer:WaitForChild("PlayerGui")
 
--- Main Frame
 local Main = Instance.new("Frame")
-Main.Name = "Main"
 Main.Size = UDim2.new(0, 620, 0, 450)
 Main.Position = UDim2.new(0.5, -310, 0.5, -225)
 Main.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
@@ -41,7 +35,6 @@ MainStroke.Color = Config.AccentColor
 MainStroke.Thickness = 2
 MainStroke.Parent = Main
 
--- Title Bar
 local TitleBar = Instance.new("Frame")
 TitleBar.Size = UDim2.new(1, 0, 0, 42)
 TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
@@ -63,16 +56,6 @@ Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TitleBar
 
-local MinimizeBtn = Instance.new("TextButton")
-MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
-MinimizeBtn.Position = UDim2.new(1, -75, 0, 6)
-MinimizeBtn.BackgroundColor3 = Color3.fromRGB(200, 180, 50)
-MinimizeBtn.Text = "−"
-MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-MinimizeBtn.TextSize = 18
-MinimizeBtn.Font = Enum.Font.GothamBold
-MinimizeBtn.Parent = TitleBar
-
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Size = UDim2.new(0, 30, 0, 30)
 CloseBtn.Position = UDim2.new(1, -40, 0, 6)
@@ -86,11 +69,6 @@ CloseBtn.MouseButton1Click:Connect(function()
     ScreenGui.Enabled = false
 end)
 
-MinimizeBtn.MouseButton1Click:Connect(function()
-    Main.Visible = not Main.Visible
-end)
-
--- Tab container
 local TabContainer = Instance.new("Frame")
 TabContainer.Size = UDim2.new(0, 150, 1, -52)
 TabContainer.Position = UDim2.new(0, 5, 0, 47)
@@ -113,7 +91,6 @@ TabPadding.PaddingLeft = UDim.new(0, 6)
 TabPadding.PaddingRight = UDim.new(0, 6)
 TabPadding.Parent = TabContainer
 
--- Content container
 local Content = Instance.new("Frame")
 Content.Size = UDim2.new(1, -165, 1, -52)
 Content.Position = UDim2.new(0, 160, 0, 47)
@@ -121,7 +98,6 @@ Content.BackgroundTransparency = 1
 Content.Parent = Main
 
 local Tabs = {}
-local CurrentPage = nil
 
 function UI:CreateTab(name, icon)
     local TabBtn = Instance.new("TextButton")
@@ -172,15 +148,10 @@ function UI:CreateTab(name, icon)
         Page.Visible = true
         TabBtn.BackgroundColor3 = Config.AccentColor
         TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        CurrentPage = Page
     end)
     
     table.insert(Tabs, {Button = TabBtn, Page = Page, Name = name})
-    
-    if #Tabs == 1 then
-        TabBtn.MouseButton1Click:Fire()
-    end
-    
+    if #Tabs == 1 then TabBtn.MouseButton1Click:Fire() end
     return Page
 end
 
@@ -190,10 +161,7 @@ function UI:CreateToggle(parent, text, default, callback)
     Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
     Frame.BorderSizePixel = 0
     Frame.Parent = parent
-    
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 6)
-    Corner.Parent = Frame
+    local Corner = Instance.new("UICorner"); Corner.CornerRadius = UDim.new(0, 6); Corner.Parent = Frame
     
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(0.7, -10, 1, 0)
@@ -216,10 +184,7 @@ function UI:CreateToggle(parent, text, default, callback)
     Toggle.Font = Enum.Font.GothamBold
     Toggle.BorderSizePixel = 0
     Toggle.Parent = Frame
-    
-    local ToggleCorner = Instance.new("UICorner")
-    ToggleCorner.CornerRadius = UDim.new(0, 6)
-    ToggleCorner.Parent = Toggle
+    local ToggleCorner = Instance.new("UICorner"); ToggleCorner.CornerRadius = UDim.new(0, 6); ToggleCorner.Parent = Toggle
     
     local state = default
     Toggle.MouseButton1Click:Connect(function()
@@ -235,7 +200,6 @@ function UI:CreateToggle(parent, text, default, callback)
         end
         callback(state)
     end)
-    
     return Frame
 end
 
@@ -245,10 +209,7 @@ function UI:CreateSlider(parent, text, min, max, default, callback)
     Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
     Frame.BorderSizePixel = 0
     Frame.Parent = parent
-    
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 6)
-    Corner.Parent = Frame
+    local Corner = Instance.new("UICorner"); Corner.CornerRadius = UDim.new(0, 6); Corner.Parent = Frame
     
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(0.6, -10, 0, 20)
@@ -278,20 +239,14 @@ function UI:CreateSlider(parent, text, min, max, default, callback)
     SliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
     SliderFrame.BorderSizePixel = 0
     SliderFrame.Parent = Frame
-    
-    local SliderCorner = Instance.new("UICorner")
-    SliderCorner.CornerRadius = UDim.new(0, 2)
-    SliderCorner.Parent = SliderFrame
+    local SliderCorner = Instance.new("UICorner"); SliderCorner.CornerRadius = UDim.new(0, 2); SliderCorner.Parent = SliderFrame
     
     local Fill = Instance.new("Frame")
     Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
     Fill.BackgroundColor3 = Config.AccentColor
     Fill.BorderSizePixel = 0
     Fill.Parent = SliderFrame
-    
-    local FillCorner = Instance.new("UICorner")
-    FillCorner.CornerRadius = UDim.new(0, 2)
-    FillCorner.Parent = Fill
+    local FillCorner = Instance.new("UICorner"); FillCorner.CornerRadius = UDim.new(0, 2); FillCorner.Parent = Fill
     
     local Thumb = Instance.new("TextButton")
     Thumb.Size = UDim2.new(0, 14, 0, 14)
@@ -300,10 +255,7 @@ function UI:CreateSlider(parent, text, min, max, default, callback)
     Thumb.Text = ""
     Thumb.BorderSizePixel = 0
     Thumb.Parent = SliderFrame
-    
-    local ThumbCorner = Instance.new("UICorner")
-    ThumbCorner.CornerRadius = UDim.new(1, 0)
-    ThumbCorner.Parent = Thumb
+    local ThumbCorner = Instance.new("UICorner"); ThumbCorner.CornerRadius = UDim.new(1, 0); ThumbCorner.Parent = Thumb
     
     local dragging = false
     Thumb.MouseButton1Down:Connect(function() dragging = true end)
@@ -330,7 +282,6 @@ function UI:CreateSlider(parent, text, min, max, default, callback)
             callback(value)
         end
     end)
-    
     return Frame
 end
 
@@ -344,11 +295,7 @@ function UI:CreateButton(parent, text, callback)
     Btn.Font = Enum.Font.Gotham
     Btn.BorderSizePixel = 0
     Btn.Parent = parent
-    
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 6)
-    Corner.Parent = Btn
-    
+    local Corner = Instance.new("UICorner"); Corner.CornerRadius = UDim.new(0, 6); Corner.Parent = Btn
     Btn.MouseEnter:Connect(function()
         TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = Config.AccentColor}):Play()
     end)
@@ -356,21 +303,7 @@ function UI:CreateButton(parent, text, callback)
         TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(35, 35, 50)}):Play()
     end)
     Btn.MouseButton1Click:Connect(callback)
-    
     return Btn
-end
-
-function UI:CreateLabel(parent, text, color)
-    local Label = Instance.new("TextLabel")
-    Label.Size = UDim2.new(1, 0, 0, 24)
-    Label.BackgroundTransparency = 1
-    Label.Text = text
-    Label.TextColor3 = color or Color3.fromRGB(200, 200, 200)
-    Label.TextSize = 13
-    Label.Font = Enum.Font.Gotham
-    Label.TextXAlignment = Enum.TextXAlignment.Left
-    Label.Parent = parent
-    return Label
 end
 
 function UI:CreateDivider(parent, text)
@@ -378,7 +311,6 @@ function UI:CreateDivider(parent, text)
     Frame.Size = UDim2.new(1, 0, 0, 24)
     Frame.BackgroundTransparency = 1
     Frame.Parent = parent
-    
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(1, 0, 1, 0)
     Label.BackgroundTransparency = 1
@@ -387,13 +319,8 @@ function UI:CreateDivider(parent, text)
     Label.TextSize = 12
     Label.Font = Enum.Font.GothamBold
     Label.Parent = Frame
-    
     return Frame
 end
-
--- =========================================================
--- TẠO CÁC TAB VÀ CHỨC NĂNG
--- =========================================================
 
 -- TAB COMBAT
 local CombatTab = UI:CreateTab("Combat", "⚔️")
@@ -402,69 +329,33 @@ UI:CreateToggle(CombatTab, "Auto Attack", false, function(state)
     Config.AutoAttack = state
     if state and _G.PEHub.Combat then _G.PEHub.Combat:StartAutoAttack() end
 end)
-UI:CreateToggle(CombatTab, "Auto Aim", false, function(state)
-    Config.AutoAim = state
-end)
+UI:CreateToggle(CombatTab, "Auto Aim", false, function(state) Config.AutoAim = state end)
 UI:CreateToggle(CombatTab, "Auto Eat", false, function(state)
     Config.AutoEat = state
     if state and _G.PEHub.AutoEat then _G.PEHub.AutoEat:Start() end
 end)
-UI:CreateSlider(CombatTab, "Tốc độ đánh", 0.01, 0.5, 0.05, function(val)
-    Config.AttackSpeed = val
-end)
-UI:CreateSlider(CombatTab, "Khoảng cách đánh", 5, 100, 15, function(val)
-    Config.AttackRange = val
-end)
-UI:CreateSlider(CombatTab, "Hitbox Size", 5, 50, 20, function(val)
-    Config.HitboxSize = val
-end)
-UI:CreateSlider(CombatTab, "Khoảng cách ăn", 20, 200, 80, function(val)
-    Config.EatRange = val
-end)
-UI:CreateDivider(CombatTab, "FLY ATTACK")
-UI:CreateToggle(CombatTab, "Fly Attack (bay trên đầu)", false, function(state)
-    Config.FlyAttack = state
-end)
-UI:CreateSlider(CombatTab, "Chiều cao bay", 5, 50, 15, function(val)
-    Config.FlyHeight = val
-end)
-UI:CreateDivider(CombatTab, "TELEPORT")
-UI:CreateToggle(CombatTab, "Auto Teleport (săn người)", false, function(state)
-    Config.AutoTeleport = state
-end)
-UI:CreateSlider(CombatTab, "Khoảng cách teleport", 100, 1000, 500, function(val)
-    Config.TeleportRange = val
-end)
+UI:CreateSlider(CombatTab, "Tốc độ đánh", 0.01, 0.5, 0.05, function(val) Config.AttackSpeed = val end)
+UI:CreateSlider(CombatTab, "Khoảng cách đánh", 5, 100, 15, function(val) Config.AttackRange = val end)
+UI:CreateSlider(CombatTab, "Hitbox Size", 5, 50, 20, function(val) Config.HitboxSize = val end)
+UI:CreateSlider(CombatTab, "Khoảng cách ăn", 20, 200, 80, function(val) Config.EatRange = val end)
 
 -- TAB MOVEMENT
 local MoveTab = UI:CreateTab("Movement", "🏃")
 UI:CreateDivider(MoveTab, "TỐC ĐỘ")
-UI:CreateSlider(MoveTab, "Tốc độ chạy", 16, 200, 50, function(val)
-    Config.WalkSpeed = val
-end)
-UI:CreateSlider(MoveTab, "Sức nhảy", 50, 300, 100, function(val)
-    Config.JumpPower = val
-end)
-UI:CreateToggle(MoveTab, "Bật tăng tốc chạy", false, function(state)
-    Config.SpeedEnabled = state
-end)
-UI:CreateToggle(MoveTab, "Bật tăng sức nhảy", false, function(state)
-    Config.JumpEnabled = state
-end)
+UI:CreateSlider(MoveTab, "Tốc độ chạy", 16, 200, 50, function(val) Config.WalkSpeed = val end)
+UI:CreateSlider(MoveTab, "Sức nhảy", 50, 300, 100, function(val) Config.JumpPower = val end)
+UI:CreateToggle(MoveTab, "Bật tăng tốc chạy", false, function(state) Config.SpeedEnabled = state end)
+UI:CreateToggle(MoveTab, "Bật tăng sức nhảy", false, function(state) Config.JumpEnabled = state end)
 UI:CreateDivider(MoveTab, "BAY")
 UI:CreateToggle(MoveTab, "Fly", false, function(state)
     if _G.PEHub.Movement then _G.PEHub.Movement:ToggleFly(state) end
 end)
-UI:CreateSlider(MoveTab, "Tốc độ bay", 10, 200, 50, function(val)
-    Config.FlySpeed = val
-end)
+UI:CreateSlider(MoveTab, "Tốc độ bay", 10, 200, 50, function(val) Config.FlySpeed = val end)
 UI:CreateDivider(MoveTab, "KHÁC")
-UI:CreateToggle(MoveTab, "Noclip (xuyên vật)", false, function(state)
+UI:CreateToggle(MoveTab, "Noclip", false, function(state)
     if _G.PEHub.Movement then _G.PEHub.Movement:ToggleNoclip(state) end
 end)
-UI:CreateToggle(MoveTab, "Water Walk", false, function(state)
-    Config.WaterWalk = state
-end)
+UI:CreateToggle(MoveTab, "Water Walk", false, function(state) Config.WaterWalk = state end)
 
 -- TAB VISUALS
 local VisTab = UI:CreateTab("Visuals", "👁️")
@@ -477,18 +368,9 @@ UI:CreateToggle(VisTab, "ESP Dinosaur", false, function(state)
     Config.ESP_Dinosaur = state
     if _G.PEHub.Visuals then _G.PEHub.Visuals:ToggleESP("Dinosaur", state) end
 end)
-UI:CreateToggle(VisTab, "ESP Food", false, function(state)
-    Config.ESP_Food = state
-    if _G.PEHub.Visuals then _G.PEHub.Visuals:ToggleESP("Food", state) end
-end)
-UI:CreateToggle(VisTab, "ESP Fossil", false, function(state)
-    Config.ESP_Fossil = state
-    if _G.PEHub.Visuals then _G.PEHub.Visuals:ToggleESP("Fossil", state) end
-end)
-UI:CreateToggle(VisTab, "ESP Zone", false, function(state)
-    Config.ESP_Zone = state
-    if _G.PEHub.Visuals then _G.PEHub.Visuals:ToggleESP("Zone", state) end
-end)
+UI:CreateToggle(VisTab, "ESP Food", false, function(state) Config.ESP_Food = state end)
+UI:CreateToggle(VisTab, "ESP Fossil", false, function(state) Config.ESP_Fossil = state end)
+UI:CreateToggle(VisTab, "ESP Zone", false, function(state) Config.ESP_Zone = state end)
 
 -- TAB FARMING
 local FarmTab = UI:CreateTab("Farming", "🌾")
@@ -497,16 +379,7 @@ UI:CreateToggle(FarmTab, "Fossil Auto Farm", false, function(state)
     Config.FossilFarm = state
     if state and _G.PEHub.Farming then _G.PEHub.Farming:StartFossilFarm() end
 end)
-UI:CreateSlider(FarmTab, "Khoảng cách farm", 20, 200, 100, function(val)
-    Config.FossilRange = val
-end)
-UI:CreateDivider(FarmTab, "KHÁC")
-UI:CreateToggle(FarmTab, "Auto Collect", false, function(state)
-    Config.AutoCollect = state
-end)
-UI:CreateToggle(FarmTab, "Auto Craft", false, function(state)
-    Config.AutoCraft = state
-end)
+UI:CreateSlider(FarmTab, "Khoảng cách farm", 20, 200, 100, function(val) Config.FossilRange = val end)
 
 -- TAB ZONES
 local ZoneTab = UI:CreateTab("Zones", "🗺️")
@@ -531,11 +404,15 @@ UI:CreateButton(SetTab, "Đổi màu Accent", function()
     Notifier:Notify("UI", "Đã đổi màu accent!", 2)
 end)
 UI:CreateDivider(SetTab, "THÔNG TIN")
-UI:CreateLabel(SetTab, "Primeval Earth Hub v1.0", Color3.fromRGB(255, 200, 0))
-UI:CreateLabel(SetTab, "Author: B.Duy Dev", Color3.fromRGB(200, 200, 200))
-UI:CreateLabel(SetTab, "GitHub: PrimevalEarth-Hub", Color3.fromRGB(100, 200, 255))
+UI:CreateButton(SetTab, "PE Hub v1.0 - B.Duy Dev", function() end)
 
--- =========================================================
 -- HOTKEY
--- =========================================================
 UserInputService.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.RightShift then
+        ScreenGui.Enabled = not ScreenGui.Enabled
+    end
+end)
+
+_G.PEHub.UI = UI
+return UI
