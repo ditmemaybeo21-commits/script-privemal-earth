@@ -1,10 +1,9 @@
---[[ Primeval Earth Hub - All-in-One ]]
+--[[ Primeval Earth Hub - Full All-in-One ]]
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local VirtualUser = game:GetService("VirtualUser")
 local Workspace = game:GetService("Workspace")
-
 local LocalPlayer = Players.LocalPlayer
 
 pcall(function()
@@ -12,54 +11,19 @@ pcall(function()
     if old then old:Destroy() end
 end)
 
-_G.PEHub = {
-    Config = {
-        WalkSpeed = 16, JumpPower = 50, FlySpeed = 50,
-        AutoAttack = false, AutoEat = false,
-        AttackRange = 15, HitboxSize = 20, AttackSpeed = 0.1, EatRange = 80,
-        FlyEnabled = false, Noclip = false,
-        AccentColor = Color3.fromRGB(255, 100, 0),
-        SpeedEnabled = false, JumpEnabled = false
-    }
+local Config = {
+    WalkSpeed = 50, JumpPower = 100, FlySpeed = 50,
+    AutoAttack = false, AutoEat = false,
+    AttackRange = 15, HitboxSize = 20, AttackSpeed = 0.1, EatRange = 80,
+    FlyEnabled = false, Noclip = false,
+    SpeedEnabled = false, JumpEnabled = false,
+    AccentColor = Color3.fromRGB(255, 100, 0)
 }
-
-local Config = _G.PEHub.Config
-
-local function Notify(title, text, duration)
-    duration = duration or 3
-    local sg = Instance.new("ScreenGui")
-    sg.Name = "PE_Notify"
-    sg.ResetOnSpawn = false
-    sg.Parent = LocalPlayer:WaitForChild("PlayerGui")
-    local f = Instance.new("Frame")
-    f.Size = UDim2.new(0, 280, 0, 70)
-    f.Position = UDim2.new(1, -300, 0, 20)
-    f.BackgroundColor3 = Color3.fromRGB(25, 25, 40)
-    f.BorderSizePixel = 0
-    f.Parent = sg
-    Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
-    local s = Instance.new("UIStroke", f); s.Color = Config.AccentColor; s.Thickness = 1.5
-    local t = Instance.new("TextLabel", f)
-    t.Size = UDim2.new(1, -20, 0, 25); t.Position = UDim2.new(0, 10, 0, 5)
-    t.BackgroundTransparency = 1; t.Text = title; t.TextColor3 = Config.AccentColor
-    t.TextSize = 14; t.Font = Enum.Font.GothamBold; t.TextXAlignment = Enum.TextXAlignment.Left
-    local b = Instance.new("TextLabel", f)
-    b.Size = UDim2.new(1, -20, 0, 30); b.Position = UDim2.new(0, 10, 0, 30)
-    b.BackgroundTransparency = 1; b.Text = text; b.TextColor3 = Color3.fromRGB(220, 220, 220)
-    b.TextSize = 12; b.Font = Enum.Font.Gotham; b.TextXAlignment = Enum.TextXAlignment.Left
-    b.TextWrapped = true
-    task.delay(duration, function() sg:Destroy() end)
-end
-
-Notify("PE Hub", "Dang khoi tao...", 2)
-print("[PE Hub] Bat dau")
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "PEHub_Menu"
 ScreenGui.ResetOnSpawn = false
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.Enabled = true
 
 local Main = Instance.new("Frame")
 Main.Size = UDim2.new(0, 620, 0, 450)
@@ -70,7 +34,9 @@ Main.Active = true
 Main.Draggable = true
 Main.Parent = ScreenGui
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
-local ms = Instance.new("UIStroke", Main); ms.Color = Config.AccentColor; ms.Thickness = 2
+local stroke = Instance.new("UIStroke", Main)
+stroke.Color = Config.AccentColor
+stroke.Thickness = 2
 
 local TitleBar = Instance.new("Frame", Main)
 TitleBar.Size = UDim2.new(1, 0, 0, 42)
@@ -79,19 +45,26 @@ TitleBar.BorderSizePixel = 0
 Instance.new("UICorner", TitleBar).CornerRadius = UDim.new(0, 8)
 
 local Title = Instance.new("TextLabel", TitleBar)
-Title.Size = UDim2.new(1, -120, 1, 0); Title.Position = UDim2.new(0, 15, 0, 0)
+Title.Size = UDim2.new(1, -120, 1, 0)
+Title.Position = UDim2.new(0, 15, 0, 0)
 Title.BackgroundTransparency = 1
 Title.Text = "Primeval Earth Hub v1.0"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 16; Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
 local CloseBtn = Instance.new("TextButton", TitleBar)
-CloseBtn.Size = UDim2.new(0, 30, 0, 30); CloseBtn.Position = UDim2.new(1, -40, 0, 6)
+CloseBtn.Size = UDim2.new(0, 30, 0, 30)
+CloseBtn.Position = UDim2.new(1, -40, 0, 6)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-CloseBtn.Text = "X"; CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseBtn.TextSize = 16; CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.MouseButton1Click:Connect(function() ScreenGui.Enabled = false end)
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextSize = 16
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui.Enabled = false
+end)
 
 local TabContainer = Instance.new("Frame", Main)
 TabContainer.Size = UDim2.new(0, 150, 1, -52)
@@ -100,9 +73,12 @@ TabContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 38)
 TabContainer.BorderSizePixel = 0
 Instance.new("UICorner", TabContainer).CornerRadius = UDim.new(0, 6)
 local TabList = Instance.new("UIListLayout", TabContainer)
-TabList.Padding = UDim.new(0, 4); TabList.SortOrder = Enum.SortOrder.LayoutOrder
+TabList.Padding = UDim.new(0, 4)
+TabList.SortOrder = Enum.SortOrder.LayoutOrder
 local TabPad = Instance.new("UIPadding", TabContainer)
-TabPad.PaddingTop = UDim.new(0, 8); TabPad.PaddingLeft = UDim.new(0, 6); TabPad.PaddingRight = UDim.new(0, 6)
+TabPad.PaddingTop = UDim.new(0, 8)
+TabPad.PaddingLeft = UDim.new(0, 6)
+TabPad.PaddingRight = UDim.new(0, 6)
 
 local Content = Instance.new("Frame", Main)
 Content.Size = UDim2.new(1, -165, 1, -52)
@@ -117,18 +93,26 @@ local function CreateTab(name)
     btn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
     btn.Text = name
     btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    btn.TextSize = 13; btn.Font = Enum.Font.Gotham; btn.BorderSizePixel = 0
+    btn.TextSize = 13
+    btn.Font = Enum.Font.Gotham
+    btn.BorderSizePixel = 0
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
 
     local page = Instance.new("ScrollingFrame", Content)
     page.Size = UDim2.new(1, 0, 1, 0)
-    page.BackgroundTransparency = 1; page.BorderSizePixel = 0
-    page.ScrollBarThickness = 4; page.ScrollBarImageColor3 = Config.AccentColor
-    page.CanvasSize = UDim2.new(0, 0, 0, 0); page.Visible = false
+    page.BackgroundTransparency = 1
+    page.BorderSizePixel = 0
+    page.ScrollBarThickness = 4
+    page.ScrollBarImageColor3 = Config.AccentColor
+    page.CanvasSize = UDim2.new(0, 0, 0, 0)
+    page.Visible = false
     local layout = Instance.new("UIListLayout", page)
-    layout.Padding = UDim.new(0, 6); layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 6)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
     local pad = Instance.new("UIPadding", page)
-    pad.PaddingTop = UDim.new(0, 8); pad.PaddingLeft = UDim.new(0, 8); pad.PaddingRight = UDim.new(0, 8)
+    pad.PaddingTop = UDim.new(0, 8)
+    pad.PaddingLeft = UDim.new(0, 8)
+    pad.PaddingRight = UDim.new(0, 8)
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         page.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 20)
     end)
@@ -145,7 +129,9 @@ local function CreateTab(name)
     end)
 
     table.insert(Tabs, {btn = btn, page = page})
-    if #Tabs == 1 then btn.MouseButton1Click:Fire() end
+    if #Tabs == 1 then
+        btn.MouseButton1Click:Fire()
+    end
     return page
 end
 
@@ -156,24 +142,35 @@ local function CreateToggle(parent, text, default, callback)
     f.BorderSizePixel = 0
     Instance.new("UICorner", f).CornerRadius = UDim.new(0, 6)
     local l = Instance.new("TextLabel", f)
-    l.Size = UDim2.new(0.7, -10, 1, 0); l.Position = UDim2.new(0, 12, 0, 0)
-    l.BackgroundTransparency = 1; l.Text = text
+    l.Size = UDim2.new(0.7, -10, 1, 0)
+    l.Position = UDim2.new(0, 12, 0, 0)
+    l.BackgroundTransparency = 1
+    l.Text = text
     l.TextColor3 = Color3.fromRGB(220, 220, 220)
-    l.TextSize = 13; l.Font = Enum.Font.Gotham; l.TextXAlignment = Enum.TextXAlignment.Left
+    l.TextSize = 13
+    l.Font = Enum.Font.Gotham
+    l.TextXAlignment = Enum.TextXAlignment.Left
     local t = Instance.new("TextButton", f)
-    t.Size = UDim2.new(0, 50, 0, 24); t.Position = UDim2.new(1, -60, 0.5, -12)
+    t.Size = UDim2.new(0, 50, 0, 24)
+    t.Position = UDim2.new(1, -60, 0.5, -12)
     t.BackgroundColor3 = default and Color3.fromRGB(0, 200, 80) or Color3.fromRGB(60, 60, 80)
     t.Text = default and "ON" or "OFF"
     t.TextColor3 = default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 100, 100)
-    t.TextSize = 11; t.Font = Enum.Font.GothamBold; t.BorderSizePixel = 0
+    t.TextSize = 11
+    t.Font = Enum.Font.GothamBold
+    t.BorderSizePixel = 0
     Instance.new("UICorner", t).CornerRadius = UDim.new(0, 6)
     local state = default
     t.MouseButton1Click:Connect(function()
         state = not state
         if state then
-            t.BackgroundColor3 = Color3.fromRGB(0, 200, 80); t.Text = "ON"; t.TextColor3 = Color3.fromRGB(255, 255, 255)
+            t.BackgroundColor3 = Color3.fromRGB(0, 200, 80)
+            t.Text = "ON"
+            t.TextColor3 = Color3.fromRGB(255, 255, 255)
         else
-            t.BackgroundColor3 = Color3.fromRGB(60, 60, 80); t.Text = "OFF"; t.TextColor3 = Color3.fromRGB(255, 100, 100)
+            t.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+            t.Text = "OFF"
+            t.TextColor3 = Color3.fromRGB(255, 100, 100)
         end
         callback(state)
     end)
@@ -186,27 +183,40 @@ local function CreateSlider(parent, text, min, max, default, callback)
     f.BorderSizePixel = 0
     Instance.new("UICorner", f).CornerRadius = UDim.new(0, 6)
     local l = Instance.new("TextLabel", f)
-    l.Size = UDim2.new(0.6, -10, 0, 20); l.Position = UDim2.new(0, 12, 0, 5)
-    l.BackgroundTransparency = 1; l.Text = text
+    l.Size = UDim2.new(0.6, -10, 0, 20)
+    l.Position = UDim2.new(0, 12, 0, 5)
+    l.BackgroundTransparency = 1
+    l.Text = text
     l.TextColor3 = Color3.fromRGB(220, 220, 220)
-    l.TextSize = 13; l.Font = Enum.Font.Gotham; l.TextXAlignment = Enum.TextXAlignment.Left
+    l.TextSize = 13
+    l.Font = Enum.Font.Gotham
+    l.TextXAlignment = Enum.TextXAlignment.Left
     local vl = Instance.new("TextLabel", f)
-    vl.Size = UDim2.new(0.4, -10, 0, 20); vl.Position = UDim2.new(0.6, 10, 0, 5)
-    vl.BackgroundTransparency = 1; vl.Text = tostring(default)
-    vl.TextColor3 = Config.AccentColor; vl.TextSize = 13; vl.Font = Enum.Font.GothamBold
+    vl.Size = UDim2.new(0.4, -10, 0, 20)
+    vl.Position = UDim2.new(0.6, 10, 0, 5)
+    vl.BackgroundTransparency = 1
+    vl.Text = tostring(default)
+    vl.TextColor3 = Config.AccentColor
+    vl.TextSize = 13
+    vl.Font = Enum.Font.GothamBold
     vl.TextXAlignment = Enum.TextXAlignment.Right
     local sf = Instance.new("Frame", f)
-    sf.Size = UDim2.new(1, -24, 0, 4); sf.Position = UDim2.new(0, 12, 0, 38)
-    sf.BackgroundColor3 = Color3.fromRGB(60, 60, 80); sf.BorderSizePixel = 0
+    sf.Size = UDim2.new(1, -24, 0, 4)
+    sf.Position = UDim2.new(0, 12, 0, 38)
+    sf.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+    sf.BorderSizePixel = 0
     Instance.new("UICorner", sf).CornerRadius = UDim.new(0, 2)
     local fill = Instance.new("Frame", sf)
     fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-    fill.BackgroundColor3 = Config.AccentColor; fill.BorderSizePixel = 0
+    fill.BackgroundColor3 = Config.AccentColor
+    fill.BorderSizePixel = 0
     Instance.new("UICorner", fill).CornerRadius = UDim.new(0, 2)
     local th = Instance.new("TextButton", sf)
     th.Size = UDim2.new(0, 14, 0, 14)
     th.Position = UDim2.new((default - min) / (max - min), -7, -5, 0)
-    th.BackgroundColor3 = Color3.fromRGB(255, 255, 255); th.Text = ""; th.BorderSizePixel = 0
+    th.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    th.Text = ""
+    th.BorderSizePixel = 0
     Instance.new("UICorner", th).CornerRadius = UDim.new(1, 0)
     local dragging = false
     th.MouseButton1Down:Connect(function() dragging = true end)
@@ -230,15 +240,31 @@ end
 
 local function CreateDivider(parent, text)
     local f = Instance.new("Frame", parent)
-    f.Size = UDim2.new(1, 0, 0, 24); f.BackgroundTransparency = 1
+    f.Size = UDim2.new(1, 0, 0, 24)
+    f.BackgroundTransparency = 1
     local l = Instance.new("TextLabel", f)
-    l.Size = UDim2.new(1, 0, 1, 0); l.BackgroundTransparency = 1
+    l.Size = UDim2.new(1, 0, 1, 0)
+    l.BackgroundTransparency = 1
     l.Text = "-- " .. text .. " --"
-    l.TextColor3 = Config.AccentColor; l.TextSize = 12; l.Font = Enum.Font.GothamBold
+    l.TextColor3 = Config.AccentColor
+    l.TextSize = 12
+    l.Font = Enum.Font.GothamBold
 end
 
+local function CreateLabel(parent, text)
+    local l = Instance.new("TextLabel", parent)
+    l.Size = UDim2.new(1, 0, 0, 24)
+    l.BackgroundTransparency = 1
+    l.Text = text
+    l.TextColor3 = Color3.fromRGB(200, 200, 200)
+    l.TextSize = 13
+    l.Font = Enum.Font.Gotham
+    l.TextXAlignment = Enum.TextXAlignment.Left
+end
+
+-- ==================== COMBAT TAB ====================
 local CombatTab = CreateTab("Combat")
-CreateDivider(CombatTab, "TAN CONG")
+CreateDivider(CombatTab, "AUTO ATTACK")
 CreateToggle(CombatTab, "Auto Attack", false, function(s)
     Config.AutoAttack = s
     if s then
@@ -253,7 +279,9 @@ CreateToggle(CombatTab, "Auto Attack", false, function(s)
                             local r = v:FindFirstChild("HumanoidRootPart")
                             if h and h.Health > 0 and r then
                                 local d = (r.Position - char.HumanoidRootPart.Position).Magnitude
-                                if d < dist then nearest, dist = v, d end
+                                if d < dist then
+                                    nearest, dist = v, d
+                                end
                             end
                         end
                     end
@@ -278,8 +306,13 @@ CreateToggle(CombatTab, "Auto Attack", false, function(s)
         end)
     end
 end)
-CreateSlider(CombatTab, "Toc do danh", 0.01, 0.5, 0.1, function(v) Config.AttackSpeed = v end)
-CreateSlider(CombatTab, "Hitbox Size", 5, 50, 20, function(v) Config.HitboxSize = v end)
+CreateSlider(CombatTab, "Toc do danh", 0.01, 0.5, 0.1, function(v)
+    Config.AttackSpeed = v
+end)
+CreateSlider(CombatTab, "Hitbox Size", 5, 50, 20, function(v)
+    Config.HitboxSize = v
+end)
+CreateDivider(CombatTab, "AUTO EAT")
 CreateToggle(CombatTab, "Auto Eat", false, function(s)
     Config.AutoEat = s
     if s then
@@ -309,14 +342,25 @@ CreateToggle(CombatTab, "Auto Eat", false, function(s)
         end)
     end
 end)
-CreateSlider(CombatTab, "Khoang cach an", 20, 200, 80, function(v) Config.EatRange = v end)
+CreateSlider(CombatTab, "Khoang cach an", 20, 200, 80, function(v)
+    Config.EatRange = v
+end)
 
+-- ==================== MOVEMENT TAB ====================
 local MoveTab = CreateTab("Movement")
 CreateDivider(MoveTab, "TOC DO")
-CreateSlider(MoveTab, "Toc do chay", 16, 200, 50, function(v) Config.WalkSpeed = v end)
-CreateSlider(MoveTab, "Suc nhay", 50, 300, 100, function(v) Config.JumpPower = v end)
-CreateToggle(MoveTab, "Bat tang toc chay", false, function(s) Config.SpeedEnabled = s end)
-CreateToggle(MoveTab, "Bat tang suc nhay", false, function(s) Config.JumpEnabled = s end)
+CreateSlider(MoveTab, "Toc do chay", 16, 200, 50, function(v)
+    Config.WalkSpeed = v
+end)
+CreateSlider(MoveTab, "Suc nhay", 50, 300, 100, function(v)
+    Config.JumpPower = v
+end)
+CreateToggle(MoveTab, "Bat tang toc chay", false, function(s)
+    Config.SpeedEnabled = s
+end)
+CreateToggle(MoveTab, "Bat tang suc nhay", false, function(s)
+    Config.JumpEnabled = s
+end)
 CreateDivider(MoveTab, "BAY")
 CreateToggle(MoveTab, "Fly", false, function(s)
     Config.FlyEnabled = s
@@ -344,7 +388,9 @@ CreateToggle(MoveTab, "Fly", false, function(s)
         end)
     end
 end)
-CreateSlider(MoveTab, "Toc do bay", 10, 200, 50, function(v) Config.FlySpeed = v end)
+CreateSlider(MoveTab, "Toc do bay", 10, 200, 50, function(v)
+    Config.FlySpeed = v
+end)
 CreateToggle(MoveTab, "Noclip", false, function(s)
     Config.Noclip = s
     task.spawn(function()
@@ -352,7 +398,9 @@ CreateToggle(MoveTab, "Noclip", false, function(s)
             local char = LocalPlayer.Character
             if char then
                 for _, p in ipairs(char:GetDescendants()) do
-                    if p:IsA("BasePart") then p.CanCollide = false end
+                    if p:IsA("BasePart") then
+                        p.CanCollide = false
+                    end
                 end
             end
             task.wait(0.2)
@@ -360,29 +408,44 @@ CreateToggle(MoveTab, "Noclip", false, function(s)
     end)
 end)
 
+-- ==================== VISUALS TAB ====================
 local VisTab = CreateTab("Visuals")
 CreateDivider(VisTab, "ESP")
-CreateToggle(VisTab, "ESP Player", false, function(s) Config.ESP_Player = s end)
-CreateToggle(VisTab, "ESP Dinosaur", false, function(s) Config.ESP_Dinosaur = s end)
+CreateToggle(VisTab, "ESP Player", false, function(s)
+    Config.ESP_Player = s
+end)
+CreateToggle(VisTab, "ESP Dinosaur", false, function(s)
+    Config.ESP_Dinosaur = s
+end)
+CreateLabel(VisTab, "ESP se hoat dong o ban cap nhat tiep theo")
 
+-- ==================== FARMING TAB ====================
 local FarmTab = CreateTab("Farming")
 CreateDivider(FarmTab, "FOSSIL")
-CreateToggle(FarmTab, "Fossil Auto Farm", false, function(s) Config.FossilFarm = s end)
+CreateToggle(FarmTab, "Fossil Auto Farm", false, function(s)
+    Config.FossilFarm = s
+end)
+CreateSlider(FarmTab, "Khoang cach farm", 20, 200, 100, function(v)
+    Config.FossilRange = v
+end)
 
+-- ==================== SETTINGS TAB ====================
 local SetTab = CreateTab("Settings")
 CreateDivider(SetTab, "INFO")
-local info = Instance.new("TextLabel", SetTab)
-info.Size = UDim2.new(1, 0, 0, 60); info.BackgroundTransparency = 1
-info.Text = "PE Hub v1.0 - B.Duy Dev"
-info.TextColor3 = Color3.fromRGB(220, 220, 220)
-info.TextSize = 13; info.Font = Enum.Font.Gotham
+CreateLabel(SetTab, "PE Hub v1.0")
+CreateLabel(SetTab, "By B.Duy Dev")
+CreateLabel(SetTab, "Nhan RightShift hoac F7 de mo/dong menu")
 
 task.spawn(function()
     while task.wait(0.1) do
         local char = LocalPlayer.Character
         if char and char:FindFirstChild("Humanoid") then
-            if Config.SpeedEnabled then char.Humanoid.WalkSpeed = Config.WalkSpeed end
-            if Config.JumpEnabled then char.Humanoid.JumpPower = Config.JumpPower end
+            if Config.SpeedEnabled then
+                char.Humanoid.WalkSpeed = Config.WalkSpeed
+            end
+            if Config.JumpEnabled then
+                char.Humanoid.JumpPower = Config.JumpPower
+            end
         end
     end
 end)
@@ -394,5 +457,4 @@ UserInputService.InputBegan:Connect(function(input, gp)
     end
 end)
 
-Notify("Primeval Earth Hub", "Da tai! Nhan RightShift hoac F7.", 5)
-print("[PE Hub] Tai hoan tat")
+print("[PE Hub] Tai hoan tat - Full version")
